@@ -53,7 +53,7 @@ app.get('/proxy/:dataType/*', rateLimiter, speedLimiter, async (req, res, next) 
                 res.send(axiosData.data);
                 break;
             default:
-                next(new Error('Impossibru!'));
+                next(new Error('Impossible!!!'));
         }
 
     } catch (error) {
