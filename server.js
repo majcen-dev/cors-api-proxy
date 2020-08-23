@@ -34,7 +34,7 @@ app.get('/proxy/:dataType/*', rateLimiter, speedLimiter, async (req, res, next) 
 
     const dataType = req.params['dataType'];
 
-    const conditions = ['xml', 'json'];
+    const conditions = ['xml', 'json', 'html'];
     if (conditions.indexOf(dataType) === -1)
         next(new Error('Error: Specify correct data type [xml,json]'));
 
@@ -47,6 +47,9 @@ app.get('/proxy/:dataType/*', rateLimiter, speedLimiter, async (req, res, next) 
             res.send(axiosData.data);
         } else if (dataType === 'json') {
             res.json(axiosData.data);
+        } else if (dataType === 'html') {
+            res.set('Content-Type', 'text/plain');
+            res.send(axiosData.data);
         } else {
             next(new Error('Impossibru!'));
         }
