@@ -62,7 +62,15 @@ app.get('/proxy/:dataType/*', rateLimiter, speedLimiter, async (req, res, next) 
 });
 
 app.get('*', (req, res) => {
-    res.send(`Are you lost?`)
+    res.send(`
+    <a href="javascript:window.location=window.location.origin">Are you lost?</a>
+    `)
+});
+
+app.use((err, req, res, next) => {
+    res.status(400).send({
+        error: err.message
+    });
 });
 
 const PORT = process.env.PORT || 3030;
