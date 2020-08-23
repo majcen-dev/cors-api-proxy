@@ -22,9 +22,6 @@ const corsOptions = {
     origin: '*'
 }
 
-//  app.use(limiter);
-//  app.use(speedLimiter);
-
 // Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
 app.set('trust proxy', 1);
 app.use(cors(corsOptions));
@@ -58,13 +55,10 @@ app.get('/proxy/:dataType/*', rateLimiter, speedLimiter, async (req, res, next) 
     } catch (error) {
         next(error);
     }
-
 });
 
 app.get('*', (req, res) => {
-    res.send(`
-    <a href="javascript:window.location=window.location.origin">Are you lost?</a>
-    `)
+    res.send(`<a href="javascript:window.location=window.location.origin">Are you lost?</a>`);
 });
 
 app.use((err, req, res, next) => {
@@ -76,5 +70,5 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3030;
 
 app.listen(PORT, () => {
-    console.log(`Server running at: http://localhost:${PORT}/`);
+    console.log(`Port: ${PORT}/`);
 });
