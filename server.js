@@ -36,7 +36,7 @@ app.get('/proxy/:dataType/*', rateLimiter, speedLimiter, async (req, res, next) 
 
     const conditions = ['xml', 'json', 'html'];
     if (conditions.indexOf(dataType) === -1)
-        next(new Error('Error: Specify correct data type [xml,json,html]'));
+        next(new Error('Specify correct data type [xml,json,html]'));
 
     try {
         const TARGET_URL = req.originalUrl.replace(`/proxy/${dataType}/`, "");
