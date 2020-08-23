@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>CORS API Proxy</title>
+</head>
+
+<body>
+    <div class="container" style="margin-top: 50px;">
+        <div class="jumbotron">
+            <h1 class="display-4">CORS API Proxy</h1>
+            <p class="lead">This is a simple proxy that circumvents bad CORS headers.</p>
+            <hr class="my-4">
+            <p>Please note that repeated usage is throttled.</p>
+            <div class="form-group">
+                <div class="form-group row">
+                    <label for="url" class="col-sm-2 col-form-label">GET URL</label>
+                    <div class="col-sm-10">
+                        <input id="urlToProxy" class="form-control" type="url">
+                    </div>
+                </div>
+                <fieldset class="form-group">
+                    <div class="row">
+                        <legend class="col-form-label col-sm-2 pt-0">Content types</legend>
+                        <div class="col-sm-10">
+                            <div class="form-check">
+                                <input type="radio" id="xmlRadio" class="form-check-input" name="radio" value="xml"
+                                    checked>
+                                <label class="form-check-label" for="xmlRadio">xml</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" id="jsonRadio" class="form-check-input" name="radio" value="json">
+                                <label class="form-check-label" for="jsonRadio">json</label><br>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button id="goButton" class="btn btn-primary">GO!</button>
+                    </div>
+                </div>
+                <hr class="my-4">
+                <div><a id="link" href=""></a></div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        const radios = document.getElementsByName('radio');
+        const urlInput = document.querySelector("#urlToProxy");
+        const goButton = document.querySelector("#goButton");
+        const link = document.querySelector("#link");
+
+        const getRadioValue = () => {
+            let value = '';
+            radios.forEach((each) => {
+                if (each.checked) value = each.value;
+            });
+            return value;
+        }
+
+        const updateLink = (e) => {
+            link.innerHTML = window.location.origin + `/proxy/${getRadioValue()}/` + urlInput.value;
+            link.href = window.location.origin + `/proxy/${getRadioValue()}/` + urlInput.value;
+        }
+
+        goButton.addEventListener('click', (e) => {
+            if(urlInput.value.length > 3)
+                window.location.href = window.location.origin + `/proxy/${getRadioValue()}/` + urlInput.value;
+        });
+
+        urlInput.addEventListener('keyup', updateLink);
+        radios.forEach((each) => {
+            each.addEventListener('change', updateLink);
+        });
+
+    </script>
+</body>
+
+</html>
