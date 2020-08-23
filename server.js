@@ -15,7 +15,7 @@ const rateLimiter = rateLimit({
 const speedLimiter = slowDown({
     windowMs: 2 * 60 * 1000,
     delayAfter: 2,
-    delayMs: 1000
+    delayMs: 500
 });
 
 const corsOptions = {
