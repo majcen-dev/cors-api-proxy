@@ -1,6 +1,6 @@
 # CORS API Proxy
 
-An Express server that lets you proxy APIs.
+An Express server that lets you proxy APIs with limiting CORS headers.
 
 ## Usage
 
