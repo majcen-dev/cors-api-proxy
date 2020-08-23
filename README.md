@@ -4,6 +4,8 @@ An Express server that lets you proxy APIs.
 
 ## Usage
 
-***hostname/content-type/api-url***  [content types: **xml**, **json**, **html**]
+You can use the UI on the home page orget data directly from the URL:
 
-Example: http://localhost:3030/proxy/json/https://jsonplaceholder.typicode.com/todos/1
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ***hostname/content-type/api-url***  [content types: **xml**, **json**, **html**]
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Example: https://majcen-cors-api-proxy.herokuapp.com/proxy/json/https://jsonplaceholder.typicode.com/todos/1
