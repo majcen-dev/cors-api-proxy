@@ -19,8 +19,11 @@
             <div class="form-group">
                 <div class="form-group row">
                     <label for="url" class="col-sm-2 col-form-label">GET URL</label>
-                    <div class="col-sm-10">
+                    <div class="input-group col-sm-10">
                         <input id="urlToProxy" class="form-control" type="url">
+                        <div class="input-group-append">
+                            <button id="clearInput" type="button" class="btn btn-outline-dark"><b>X</b></button>
+                        </div>
                     </div>
                 </div>
                 <fieldset class="form-group">
@@ -54,19 +57,17 @@
         </div>
         <footer class="mt-auto" style="margin: 10px;">
             <div class="inner">
-                <p>Source available on <a href="https://github.com/majcen-dev/cors-api-proxy" target="_blank">GitHub</a></p>
+                <p>Source available on <a href="https://github.com/majcen-dev/cors-api-proxy" target="_blank">GitHub</a>
+                </p>
             </div>
         </footer>
     </div>
-
-
-
-
 
     <script>
         const radios = document.getElementsByName('radio');
         const urlInput = document.querySelector("#urlToProxy");
         const goButton = document.querySelector("#goButton");
+        const clearInput = document.querySelector("#clearInput");
         const link = document.querySelector("#link");
 
         const getRadioValue = () => {
@@ -77,18 +78,22 @@
             return value;
         }
 
-        const updateLink = (e) => {
+        const updateLink = () => {
             link.innerHTML = window.location.origin + `/proxy/${getRadioValue()}/` + urlInput.value;
             link.href = window.location.origin + `/proxy/${getRadioValue()}/` + urlInput.value;
         }
 
-        goButton.addEventListener('click', (e) => {
+        goButton.addEventListener('click', () => {
             if (urlInput.value.length > 3)
                 window.open(
                     window.location.origin + `/proxy/${getRadioValue()}/` + urlInput.value,
                     '_blank'
                 );
-            // window.location.href = window.location.origin + `/proxy/${getRadioValue()}/` + urlInput.value;
+        });
+
+        clearInput.addEventListener('click', () => {
+            urlInput.value = "";
+            updateLink();
         });
 
         urlInput.addEventListener('paste', updateLink);
@@ -96,6 +101,8 @@
         radios.forEach((each) => {
             each.addEventListener('change', updateLink);
         });
+
+        updateLink();
 
     </script>
 </body>

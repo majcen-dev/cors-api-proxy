@@ -40,16 +40,20 @@ app.get('/proxy/:dataType/*', rateLimiter, speedLimiter, async (req, res, next) 
         if (TARGET_URL.length < 4) next(new Error('Url too short!'));
 
         const axiosData = await axios(TARGET_URL);
-        if (dataType === 'xml') {
-            res.set('Content-Type', 'text/xml');
-            res.send(axiosData.data);
-        } else if (dataType === 'json') {
-            res.json(axiosData.data);
-        } else if (dataType === 'html') {
-            res.set('Content-Type', 'text/plain');
-            res.send(axiosData.data);
-        } else {
-            next(new Error('Impossibru!'));
+        switch (dataType) {
+            case 'xml':
+                res.set('Content-Type', 'text/xml');
+                res.send(axiosData.data);
+                break;
+            case 'json':
+                res.json(axiosData.data);
+                break;
+            case 'html':
+                res.set('Content-Type', 'text/plain');
+                res.send(axiosData.data);
+                break;
+            default:
+                next(new Error('Impossibru!'));
         }
 
     } catch (error) {
