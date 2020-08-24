@@ -1,7 +1,8 @@
 # CORS API Proxy
 
 An Express server that lets you proxy APIs with limiting CORS headers.<br/>
-You can also retrieve any server rendered website as text/plain for the purposes of [parsing](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser)
+You can also retrieve any server rendered website as text/plain for the purposes of [parsing](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser).<br/>
+For that select the content type [**html**].
 
 ## Usage
 
