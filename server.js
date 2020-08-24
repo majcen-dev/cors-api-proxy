@@ -24,6 +24,7 @@ const corsOptions = {
 
 // Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
 app.set('trust proxy', 1);
+
 app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, 'public')));
 
