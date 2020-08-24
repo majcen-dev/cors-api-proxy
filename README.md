@@ -4,6 +4,8 @@ An Express server that lets you proxy **xml** and **json** APIs with limiting CO
 You can also retrieve any server rendered website as text/plain for the purposes of [parsing](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser).<br/>
 For that select the content type **html**.
 
+*Only GET requests are currently supported.*
+
 ## Usage
 
 You can use the UI on the home page orget data directly from the URL:
