@@ -9,8 +9,10 @@ You can use the UI on the home page orget data directly from the URL:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ***hostname/content-type/api-url***  [content types: **xml**, **json**, **html**]<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Example: https://majcen-cors-api-proxy.herokuapp.com/proxy/json/https://jsonplaceholder.typicode.com/todos/1
 
-### Live version:
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; https://majcen-cors-api-proxy.herokuapp.com
+### Throttling:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Repeated usage is throttled via [Express Rate Limit](https://www.npmjs.com/package/express-rate-limit) and [Express Slow Down](https://www.npmjs.com/package/express-slow-down).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You can clone the repository and change these settings for your own use.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Please note that repeated usage is throttled via [Express Rate Limit](https://www.npmjs.com/package/express-rate-limit) and [Express Slow Down](https://www.npmjs.com/package/express-slow-down).<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You can clone this repository and change these settings for your own use.
+### Live version:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; https://majcen-cors-api-proxy.herokuapp.com <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <sub>*Hosted on Heroku. Please wait for up to 10s for the server to wake up.*</sup>
