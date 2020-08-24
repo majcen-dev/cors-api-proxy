@@ -12,3 +12,5 @@ You can use the UI on the home page orget data directly from the URL:
 
 ### Live version:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; https://majcen-cors-api-proxy.herokuapp.com
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Please note that repeated usage is throttled via [Express Rate Limit](https://www.npmjs.com/package/express-rate-limit) and [Express Slow Down](https://www.npmjs.com/package/express-slow-down). You can clone this repository and change these settings for your own use.
