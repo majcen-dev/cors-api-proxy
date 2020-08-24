@@ -10,7 +10,7 @@ For that select the content type **html**.
 
 You can use the UI on the home page orget data directly from the URL:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ***server-hostname***/proxy/***content-type***/***target-api-url***  [content types: **xml**, **json**, **html**]<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ***proxy-origin-url***/proxy/***content-type***/***target-api-url***  [content types: **xml**, **json**, **html**]<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Example: https://majcen-cors-api-proxy.herokuapp.com/proxy/json/https://jsonplaceholder.typicode.com/todos/1
 
 ### Throttling:
