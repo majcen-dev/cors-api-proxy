@@ -14,11 +14,13 @@
         <div class="jumbotron" style="margin-bottom: 0px;">
             <h1 class="display-4">CORS API Proxy</h1>
             <p class="lead">This is a simple proxy that circumvents limiting CORS headers.</p>
+            <button id="showGet" class="btn btn-info btn-sm">GET</button>
+            <button id="showPost" class="btn btn-info btn-sm">POST <i>(experimental)</i></button>
             <hr class="my-4">
             <p><i>Please note that repeated usage is throttled.</i></p>
-            <div class="form-group">
+            <div id="getForm" class="form-group">
                 <div class="form-group row">
-                    <label for="url" class="col-sm-2 col-form-label">GET URL</label>
+                    <label for="url" class="col-sm-2 col-form-label"><b>GET URL:</b></label>
                     <div class="input-group col-sm-10">
                         <input id="urlToProxy" class="form-control" type="url">
                         <div class="input-group-append">
@@ -28,7 +30,7 @@
                 </div>
                 <fieldset class="form-group">
                     <div class="row">
-                        <legend class="col-form-label col-sm-2 pt-0">Content types</legend>
+                        <legend class="col-form-label col-sm-2 pt-0"><b>Expected<br>content type:</b></legend>
                         <div class="col-sm-10">
                             <div class="form-check">
                                 <input type="radio" id="htmlRadio" class="form-check-input" name="radio" value="html">
@@ -54,7 +56,47 @@
                 <hr class="my-4">
                 <div>Direct link: <a id="link" href="" target="_blank"></a></div>
             </div>
+
+            <div id="postForm" class="form-group">
+                <div class="form-group row">
+                    <label for="url" class="col-sm-2 col-form-label"><b>POST URL:</b></label>
+                    <div class="input-group col-sm-10">
+                        <input id="urlToProxyPost" class="form-control" type="url">
+                        <div class="input-group-append">
+                            <button id="clearInputPost" type="button" class="btn btn-outline-dark"><b>X</b></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="payloadArea" class="col-sm-2 col-form-label"><b>Body Data<br><i>(JSON
+                                only):</i></b></label>
+                    <div class="input-group col-sm-10">
+                        <textarea id="payloadArea" name="payloadArea" rows="6"
+                            cols="80">{"exampleName1": "", "exampleName2": ""}</textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button id="goButtonPost" class="btn btn-primary">Preview</button>
+                    </div>
+                </div>
+                <hr class="my-4">
+                <div>Preview response here:<br> <a id="linkPost" href="" target="_blank" style="word-wrap: break-word"></a></div>
+                <br>
+                <div><b><i>Use POST request:</i></b><br> <span id="urlPost"></span></div>
+                <br>
+                <div><b><i>Expected JSON response:</i></b></div>
+                <div><br>
+                    <pre><code></code>{
+  "headers": "...",
+  "response": "..."
+}</code></pre>
+                </div>
+            </div>
         </div>
+
+
+
         <footer class="mt-auto" style="margin: 10px;">
             <div class="inner">
                 <p>Source available on <a href="https://github.com/majcen-dev/cors-api-proxy" target="_blank">GitHub</a>
@@ -70,6 +112,30 @@
         const clearInput = document.querySelector("#clearInput");
         const link = document.querySelector("#link");
 
+        const payloadAreaPost = document.querySelector("#payloadArea");
+        const urlInputPost = document.querySelector("#urlToProxyPost");
+        const goButtonPost = document.querySelector("#goButtonPost");
+        const clearInputPost = document.querySelector("#clearInputPost");
+        const linkPost = document.querySelector("#linkPost");
+        const urlPost = document.querySelector("#urlPost");
+
+        const showGetButton = document.querySelector("#showGet");
+        const showPostButton = document.querySelector("#showPost");
+
+        const getForm = document.querySelector("#getForm");
+        const postForm = document.querySelector("#postForm");
+
+        postForm.style = "display: none;";
+
+        showGetButton.addEventListener('click', () => {
+            getForm.style = "display: block;";
+            postForm.style = "display: none;";
+        });
+        showPostButton.addEventListener('click', () => {
+            getForm.style = "display: none;";
+            postForm.style = "display: block;";
+        });
+
         const getRadioValue = () => {
             let value = '';
             radios.forEach((each) => {
@@ -83,10 +149,47 @@
             link.href = window.location.origin + `/proxy/${getRadioValue()}/` + urlInput.value;
         }
 
+        const updateLinkPost = () => {
+            let myReq = {
+                u: urlInputPost.value,
+                p: payloadAreaPost.value.replace(/\s+/g, '')
+            };
+            const base64Payload = btoa(JSON.stringify(myReq));
+            linkPost.innerHTML = window.location.origin + '/proxy/post-as-get/?base=' + base64Payload;
+            linkPost.href = window.location.origin + '/proxy/post-as-get/?base=' + base64Payload;
+
+            let previewStr = `
+  const JSON_OBJECT = \'{"payload": ${payloadAreaPost.value.replace(/\s+/g, '')}}\';
+  fetch(\'${window.location.origin + '/proxy/post/' + urlInputPost.value}\', {
+    method: \'POST\',
+    headers: { \'Content-Type\': \'application/json\' },
+    body: JSON_OBJECT
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+  });`
+
+            urlPost.innerHTML = `<pre><code>${previewStr}</code></pre>`;
+        }
+
         goButton.addEventListener('click', () => {
             if (urlInput.value.length > 3)
                 window.open(
                     window.location.origin + `/proxy/${getRadioValue()}/` + urlInput.value,
+                    '_blank'
+                );
+        });
+
+        goButtonPost.addEventListener('click', () => {
+            let myReq = {
+                u: urlInputPost.value,
+                p: payloadAreaPost.value.replace(/\s+/g, '')
+            };
+            const base64Payload = btoa(JSON.stringify(myReq));
+            if (urlInputPost.value.length > 3)
+                window.open(
+                    window.location.origin + '/proxy/post-as-get/?base=' + base64Payload,
                     '_blank'
                 );
         });
@@ -96,13 +199,43 @@
             updateLink();
         });
 
+        clearInputPost.addEventListener('click', () => {
+            urlInputPost.value = "";
+            updateLinkPost();
+        });
+
         urlInput.addEventListener('paste', updateLink);
         urlInput.addEventListener('keyup', updateLink);
+
+        urlInputPost.addEventListener('paste', updateLinkPost);
+        urlInputPost.addEventListener('keyup', updateLinkPost);
+        payloadAreaPost.addEventListener('paste', updateLinkPost);
+        payloadAreaPost.addEventListener('keyup', updateLinkPost);
+
         radios.forEach((each) => {
             each.addEventListener('change', updateLink);
         });
 
+        const makePostRequest = (url, payload) => {
+            let myReq = {
+                url: url,
+                payload: payload
+            };
+            const base64Payload = atob(JSON.stringify(myReq));
+
+            fetch(window.location.origin + '/proxy/post-as-get/' + url + '?base=' + base64Payload, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: payload,
+            })
+            .then(response => response.json())
+            .then(data => {
+                    console.log('Success:', data);
+             });             
+        }
+
         updateLink();
+        updateLinkPost();
     </script>
 </body>
 

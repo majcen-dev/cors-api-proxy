@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require("body-parser");
 const cors = require('cors');
 const path = require('path');
 const rateLimit = require('express-rate-limit');
@@ -27,6 +28,51 @@ app.set('trust proxy', 1);
 
 app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.post('/proxy/post/*', rateLimiter, speedLimiter, bodyParser.json(), async (req, res, next) => {
+    try {
+        const TARGET_URL = req.originalUrl.replace(`/proxy/post/`, "");
+        if (TARGET_URL.length < 4) next(new Error('Url too short!'));
+
+        const axiosData = await axios.post(TARGET_URL, req.body.payload);
+
+        const returnObject = {
+            headers: axiosData.headers,
+            response: axiosData.data
+        }
+
+        res.json(returnObject);
+
+    } catch (error) {
+        next(error);
+    }
+});
+
+app.get('/proxy/post-as-get/*', rateLimiter, speedLimiter, async (req, res, next) => {
+
+    try {
+        const TARGET_URL = req.originalUrl.replace(`/proxy/post-as-get/?base=`, "");
+        if (TARGET_URL.length < 4) next(new Error('Url too short!'));
+
+        const buff = new Buffer.from(TARGET_URL, 'base64');
+        const text = buff.toString('utf-8');
+        const decodedObj = JSON.parse(text);
+
+        const axiosData = await axios.post(decodedObj.u, decodedObj.p, {
+            headers: { 'content-type': 'application/json' }
+        });
+
+        const axiosRes = {
+            headers: axiosData.headers,
+            response: axiosData.data
+        }
+
+        res.json(axiosRes);
+
+    } catch (error) {
+        next(error);
+    }
+});
 
 app.get('/proxy/:dataType/*', rateLimiter, speedLimiter, async (req, res, next) => {
 
