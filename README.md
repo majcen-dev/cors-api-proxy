@@ -48,7 +48,7 @@ If you provide a JSON body it must be in the following format:
 ```JSON
 {
   "payload": {
-    /*YOUR JSON DATA*/
+    /*YOUR_JSON_DATA*/
   }
 }
 ```
