@@ -49,14 +49,13 @@ app.post('/proxy/post/*', rateLimiter, speedLimiter, bodyParser.json(), async (r
 });
 
 app.get('/proxy/post-as-get/*', rateLimiter, speedLimiter, async (req, res, next) => {
-
     try {
-        const TARGET_URL = req.originalUrl.replace(`/proxy/post-as-get/?base=`, "");
-        if (TARGET_URL.length < 4) next(new Error('Url too short!'));
+        const BASE64String = req.originalUrl.replace(`/proxy/post-as-get/?base=`, "");
 
-        const buff = new Buffer.from(TARGET_URL, 'base64');
+        const buff = new Buffer.from(BASE64String, 'base64');
         const text = buff.toString('utf-8');
         const decodedObj = JSON.parse(text);
+        if (decodedObj.u.length < 4) next(new Error('Url too short!'));
 
         const axiosData = await axios.post(decodedObj.u, decodedObj.p, {
             headers: { 'content-type': 'application/json' }

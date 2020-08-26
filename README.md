@@ -4,7 +4,7 @@ An Express server that lets you proxy **xml** and **json** APIs with limiting CO
 You can also retrieve any server rendered website as text/plain for the purposes of [parsing](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser).<br/>
 For that select the content type **html**.
 
-You can also proxy POST requests but that feature is currently experimental. More details below.
+You can also proxy POST requests. More details below.
 
 ### Throttling:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Repeated usage is throttled via [Express Rate Limit](https://www.npmjs.com/package/express-rate-limit) and [Express Slow Down](https://www.npmjs.com/package/express-slow-down).<br/>
@@ -15,15 +15,14 @@ You can also proxy POST requests but that feature is currently experimental. Mor
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <sub>*Hosted on Heroku. Please wait for up to 10s for the server to wake up.*</sup>
 
 
-## Usage GET
+## Using GET
 
 You can use the UI on the home page or get data directly from the URL:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ***proxy-origin-url***/proxy/***content-type***/***target-api-url***  [content types: **xml**, **json**, **html**]<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Example: https://majcen-cors-api-proxy.herokuapp.com/proxy/json/https://jsonplaceholder.typicode.com/todos/1
 
-## Usage POST *(experimental)*
-***The POST API is experiemtal and has not yet been extensively tested.*** <br/>
+## Using POST
 
 You can use the UI on the home page or get data directly from the URL:
 
@@ -77,7 +76,7 @@ fetch('https://majcen-cors-api-proxy.herokuapp.com/proxy/post/https://postman-ec
     console.log(data);
   });
 ```
-## Alternative POST usage *(experimental)*
+## Alternative POST usage
 You can invoke the POST API as a GET request:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ***proxy-origin-url***/proxy/post-as-get/?base=***BASE64-encoded-string*** <br/><br/>
