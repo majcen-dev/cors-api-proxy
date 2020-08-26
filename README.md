@@ -31,7 +31,7 @@ You can optionally attach a body to your request.<br/>
 Example: https://majcen-cors-api-proxy.herokuapp.com/proxy/post/https://postman-echo.com/post <br/>
 See below how to structure your body in the request.<br/>
 
-*Be sure to format you JSON payload properly as there is no error handling at this time.*<br/>
+*Be sure to format you JSON payload properly as error handling may be limited.*<br/>
 The only accepted content type is ***'application/json'***.<br/>
 
 CORS API Proxy will return the following JSON response:
@@ -76,7 +76,7 @@ fetch('https://majcen-cors-api-proxy.herokuapp.com/proxy/post/https://postman-ec
     console.log(data);
   });
 ```
-## Alternative POST usage
+## Using POST as a GET request
 You can invoke the POST API as a GET request:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ***proxy-origin-url***/proxy/post-as-get/?base=***BASE64-encoded-string*** <br/><br/>
