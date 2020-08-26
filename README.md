@@ -45,7 +45,7 @@ CORS API Proxy will return the following JSON response:
 
 If you provide a JSON body it must be in the following format:
 
-```JSON
+```JSONC
 {
   "payload": {
     /*YOUR_JSON_DATA*/
