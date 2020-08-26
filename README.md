@@ -29,12 +29,13 @@ You can use the UI on the home page or get data directly from the URL:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ***proxy-origin-url***/proxy/post/***target-api-url*** <br/><br/>
 You can optionally attach a body to your request.<br/>
 Example: https://majcen-cors-api-proxy.herokuapp.com/proxy/post/https://postman-echo.com/post <br/>
-See below how to structure your body in the request.<br/>
+See below how to structure your body and cookies in the request.<br/>
 
-*Be sure to format you JSON payload properly as error handling may be limited.*<br/>
+*Be sure to format you JSON and Cookie payload properly as error handling is limited.*<br/>
 The only accepted content type is ***'application/json'***.<br/>
 
 CORS API Proxy will return the following JSON response:
+
 ```JSON
 {
   "headers": "...",
@@ -42,25 +43,27 @@ CORS API Proxy will return the following JSON response:
 }
 ```
 
-If you provide a JSON body it must be in the following format:
+If you provide an optional JSON body and cookie string they must be in the following format:
 
 ```JSONC
 {
-  "payload": {
-    /*YOUR_JSON_DATA*/
-  }
+  "body": /* JSON_BODY_DATA */,
+  "cookie": "COOKIE_STRING",
+  "ac": /* Access-Control-Allow-Credentials_BOOLEAN */
 }
 ```
 For example:
+
 ```JSONC
 {
-  "payload": {
+  "body": {
     "example": {
       "example2": "",
-      "example3": "",
-      /*...*/
+      "example3": ""
     }
-  }
+  },
+  "cookie": "name=exampleName; SessionID=fd5example8cb;",
+  "ac": true
 }
 ```
 Example of JavaScript code to invoke the POST API:
@@ -83,15 +86,22 @@ You can invoke the POST API as a GET request:
 Example: https://majcen-cors-api-proxy.herokuapp.com/proxy/post-as-get/?base=eyJ1IjoiaHR0cHM6Ly9wb3N0bWFuLWVjaG8uY29tL3Bvc3QiLCJwIjoie1wiZXhhbXBsZU5hbWUxXCI6XCJcIixcImV4YW1wbGVOYW1lMlwiOlwiXCJ9In0=
 
 <br/>The BASE64 string is formed from the following JSON object:
-```JSON
-{"u": "URL", "p": "JSON_BODY_DATA"}
+
+```JSONC
+{
+  "url": "TARGET_URL",
+  "body": /* JSON_BODY_DATA */,
+  "cookie": "COOKIE_STRING",
+  "ac": /* Access-Control-Allow-Credentials_BOOLEAN */
+}
 ```
-Note that the ***u*** and ***p*** parameters cannot be renamed.<br/>
 The BASE64 string can be created in JavaScript like this:
 ```Javascript
 const obj = {
-  u: 'https://postman-echo.com/post',
-  p: '{"exampleName1":"","exampleName2":""}'
+  url: 'https://postman-echo.com/post',
+  body: '{"exampleName1":"","exampleName2":""}'
+  cookie: "name=exampleName; SessionID=fd5example8cb;", 
+  ac: true
 };
 const base64Payload = btoa(JSON.stringify(obj));
 ```

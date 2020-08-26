@@ -6,6 +6,8 @@ const rateLimit = require('express-rate-limit');
 const slowDown = require('express-slow-down');
 const axios = require('axios');
 
+const fetch = require('node-fetch');
+
 const app = express();
 
 const rateLimiter = rateLimit({
@@ -34,7 +36,12 @@ app.post('/proxy/post/*', rateLimiter, speedLimiter, bodyParser.json(), async (r
         const TARGET_URL = req.originalUrl.replace(`/proxy/post/`, "");
         if (TARGET_URL.length < 4) next(new Error('Url too short!'));
 
-        const axiosData = await axios.post(TARGET_URL, req.body.payload);
+        const axiosData = await axios.post(TARGET_URL, req.body.body, {
+            withCredentials: req.body.ac,
+            headers: {
+                Cookie: req.body.cookie,
+            }
+        });
 
         const returnObject = {
             headers: axiosData.headers,
@@ -55,10 +62,14 @@ app.get('/proxy/post-as-get/*', rateLimiter, speedLimiter, async (req, res, next
         const buff = new Buffer.from(BASE64String, 'base64');
         const text = buff.toString('utf-8');
         const decodedObj = JSON.parse(text);
-        if (decodedObj.u.length < 4) next(new Error('Url too short!'));
+        if (decodedObj.url.length < 4) next(new Error('Url too short!'));
 
-        const axiosData = await axios.post(decodedObj.u, decodedObj.p, {
-            headers: { 'content-type': 'application/json' }
+        const axiosData = await axios.post(decodedObj.url, decodedObj.body, {
+            withCredentials: decodedObj.ac,
+            headers: {
+                'content-type': 'application/json',
+                Cookie: decodedObj.cookie,
+            }
         });
 
         const axiosRes = {

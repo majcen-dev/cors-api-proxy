@@ -72,7 +72,20 @@
                                 only):</i></b></label>
                     <div class="input-group col-sm-10">
                         <textarea id="payloadArea" name="payloadArea" rows="6"
-                            cols="80">{"exampleName1": "", "exampleName2": ""}</textarea>
+                            cols="80" class="form-control" placeholder='{"exampleName1": "", "exampleName2": ""}'></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="cookieArea" class="col-sm-2 col-form-label"><b>Cookie:</i></b></label>
+                    <div class="input-group col-sm-10">
+                        <textarea id="cookieArea" name="cookieArea" rows="3"
+                            cols="80" class="form-control" placeholder="name=exampleName; SessionID=fd5example8cb;"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="acacBox" class="col-sm-2 col-form-label"><b>Access-Control-<br>Allow-Credentials:</i></b></label>
+                    <div class="input-group col-sm-10 mt-4">
+                        <input type="checkbox" id="acacBox" name="acacBox">
                     </div>
                 </div>
                 <div class="form-group row">
@@ -81,7 +94,8 @@
                     </div>
                 </div>
                 <hr class="my-4">
-                <div>Preview response here:<br> <a id="linkPost" href="" target="_blank" style="word-wrap: break-word"></a></div>
+                <div>Preview response here:<br> <a id="linkPost" href="" target="_blank"
+                        style="word-wrap: break-word"></a></div>
                 <br>
                 <div><b><i>Use POST request:</i></b><br> <span id="urlPost"></span></div>
                 <br>
@@ -119,13 +133,16 @@
         const linkPost = document.querySelector("#linkPost");
         const urlPost = document.querySelector("#urlPost");
 
+        const cookieArea = document.querySelector("#cookieArea");
+        const acacBox = document.querySelector("#acacBox");
+
         const showGetButton = document.querySelector("#showGet");
         const showPostButton = document.querySelector("#showPost");
 
         const getForm = document.querySelector("#getForm");
         const postForm = document.querySelector("#postForm");
 
-        postForm.style = "display: none;";
+        //postForm.style = "display: none;";
 
         showGetButton.addEventListener('click', () => {
             getForm.style = "display: block;";
@@ -151,18 +168,20 @@
 
         const updateLinkPost = () => {
             let myReq = {
-                u: urlInputPost.value,
-                p: payloadAreaPost.value.replace(/\s+/g, '')
+                url: urlInputPost.value,
+                body: payloadAreaPost.value.replace(/\s+/g, '') || "\"\"",
+                cookie: cookieArea.value,
+                ac: acacBox.checked
             };
             const base64Payload = btoa(JSON.stringify(myReq));
             linkPost.innerHTML = window.location.origin + '/proxy/post-as-get/?base=' + base64Payload;
             linkPost.href = window.location.origin + '/proxy/post-as-get/?base=' + base64Payload;
 
             let previewStr = `
-  const JSON_OBJECT = \'{"payload": ${payloadAreaPost.value.replace(/\s+/g, '')}}\';
+  const JSON_OBJECT = \'{"body": ${myReq.body}, "cookie": "${cookieArea.value}", "ac": ${acacBox.checked}}\';
   fetch(\'${window.location.origin + '/proxy/post/' + urlInputPost.value}\', {
     method: \'POST\',
-    headers: { \'Content-Type\': \'application/json\' },
+    headers: {\'Content-Type\': \'application/json\'},
     body: JSON_OBJECT
     })
     .then(response => response.json())
@@ -180,11 +199,13 @@
                     '_blank'
                 );
         });
-
+        
         goButtonPost.addEventListener('click', () => {
             let myReq = {
-                u: urlInputPost.value,
-                p: payloadAreaPost.value.replace(/\s+/g, '')
+                url: urlInputPost.value,
+                body: payloadAreaPost.value.replace(/\s+/g, ''),
+                cookie: cookieArea.value,
+                ac: acacBox.checked
             };
             const base64Payload = btoa(JSON.stringify(myReq));
             if (urlInputPost.value.length > 3)
@@ -211,28 +232,14 @@
         urlInputPost.addEventListener('keyup', updateLinkPost);
         payloadAreaPost.addEventListener('paste', updateLinkPost);
         payloadAreaPost.addEventListener('keyup', updateLinkPost);
+        cookieArea.addEventListener('paste', updateLinkPost);
+        cookieArea.addEventListener('keyup', updateLinkPost);
+
+        acacBox.addEventListener('change', updateLinkPost);
 
         radios.forEach((each) => {
             each.addEventListener('change', updateLink);
         });
-
-        const makePostRequest = (url, payload) => {
-            let myReq = {
-                url: url,
-                payload: payload
-            };
-            const base64Payload = atob(JSON.stringify(myReq));
-
-            fetch(window.location.origin + '/proxy/post-as-get/' + url + '?base=' + base64Payload, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: payload,
-            })
-            .then(response => response.json())
-            .then(data => {
-                    console.log('Success:', data);
-             });             
-        }
 
         updateLink();
         updateLinkPost();
