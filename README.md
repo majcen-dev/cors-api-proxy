@@ -53,13 +53,13 @@ If you provide a JSON body it must be in the following format:
 }
 ```
 For example:
-```JSON
+```JSONC
 {
   "payload": {
     "example": {
       "example2": "",
       "example3": "",
-      ...
+      /*...*/
     }
   }
 }
