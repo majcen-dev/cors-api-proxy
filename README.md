@@ -1,19 +1,17 @@
 # CORS API Proxy
 
-An Express server that lets you proxy **xml** and **json** APIs with limiting CORS headers.<br/>
-You can also retrieve any server rendered website as text/plain for the purposes of [parsing](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser).<br/>
-For that select the content type **html**.
+An Express server that lets you circumvent CORS headers. You can retrieve **xml** and **json** APIs and any server rendered website as text/plain for the purposes of [parsing](https://developer.mozilla.org/en-US/docs/Web/API/DOMParser). For that select the content type **html**. CORS API Proxy can fetch GET and POST requests. More details below.
 
-You can also proxy POST requests. More details below.
-
-### Throttling:
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Repeated usage is throttled via [Express Rate Limit](https://www.npmjs.com/package/express-rate-limit) and [Express Slow Down](https://www.npmjs.com/package/express-slow-down).<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You can clone the repository and change these settings for your own use.
+### Motivation:
+The [Cross-Origin Resource Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) mechanism exists for a reason, but sometimes it's badly implemented which can restrict legitimate use cases. Developers can also find themelves blocked by CORS headers and unable to fetch resources when production and development origins don't match. Regardles of your use case, this tool enables you to proxy your request through a server, so its response can be processed in your browser.
 
 ### Live version:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; https://majcen-cors-api-proxy.herokuapp.com <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <sub>*Hosted on Heroku. Please wait for up to 10s for the server to wake up.*</sup>
 
+### Throttling:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Repeated usage is throttled via [Express Rate Limit](https://www.npmjs.com/package/express-rate-limit) and [Express Slow Down](https://www.npmjs.com/package/express-slow-down).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; You can clone the repository and change these settings for your own use.
 
 ## Using GET
 
@@ -27,14 +25,14 @@ You can use the UI on the home page or get data directly from the URL:
 You can use the UI on the home page or get data directly from the URL:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ***proxy-origin-url***/proxy/post/***target-api-url*** <br/><br/>
-You can optionally attach a body to your request.<br/>
+You can optionally attach cookies and body to your request.<br/>
 Example: https://majcen-cors-api-proxy.herokuapp.com/proxy/post/https://postman-echo.com/post <br/>
 See below how to structure your body and cookies in the request.<br/>
 
-*Be sure to format you JSON and Cookie payload properly as error handling is limited.*<br/>
+*Be sure to format your JSON and cookie payload properly as error handling is limited.*<br/>
 The only accepted content type is ***'application/json'***.<br/>
 
-CORS API Proxy will return the following JSON response:
+CORS API Proxy will return the following JSON response with more nested objects:
 
 ```JSON
 {
@@ -68,16 +66,16 @@ For example:
 ```
 Example of JavaScript code to invoke the POST API:
 ```Javascript
-const JSON_OBJECT = '{"payload": {"exampleName1":"","exampleName2":""}}';
+const JSON_OBJECT = '{"body": {"exampleName1":"","exampleName2":""}, "cookie": "name=exampleName; SessionID=fd5example8cb;", "ac": false}';
 fetch('https://majcen-cors-api-proxy.herokuapp.com/proxy/post/https://postman-echo.com/post', {
   method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-    body: JSON_OBJECT
-  })
-  .then(response => response.json())
-  .then(data => {
+  headers: {'Content-Type': 'application/json'},
+  body: JSON_OBJECT
+})
+.then(response => response.json())
+.then(data => {
     console.log(data);
-  });
+});
 ```
 ## Using POST as a GET request
 You can invoke the POST API as a GET request:
@@ -108,7 +106,7 @@ const base64Payload = btoa(JSON.stringify(obj));
 
 ## User interface
 
-The UI on the homepage will help you to construct GET and POST requests.
+The UI on the homepage will help you to construct GET and POST requests and provide you with JavaScript code to invoke them when appropriate. 
 
 ### Live version:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; https://majcen-cors-api-proxy.herokuapp.com <br/>
