@@ -17,14 +17,14 @@ The [Cross-Origin Resource Sharing](https://developer.mozilla.org/en-US/docs/Web
 
 You can use the UI on the home page or get data directly from the URL:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ***proxy-origin-url***/proxy/***content-type***/***target-api-url***  [content types: **xml**, **json**, **html**]<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **GET:** ***proxy-origin-url***/proxy/***content-type***/***target-api-url***  [content types: **xml**, **json**, **html**]<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Example: https://majcen-cors-api-proxy.herokuapp.com/proxy/json/https://jsonplaceholder.typicode.com/todos/1
 
 ## Using POST
 
 You can use the UI on the home page or get data directly from the URL:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ***proxy-origin-url***/proxy/post/***target-api-url*** <br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **POST:** ***proxy-origin-url***/proxy/post/***target-api-url*** <br/><br/>
 You can optionally attach cookies and body to your request.<br/>
 Example: https://majcen-cors-api-proxy.herokuapp.com/proxy/post/https://postman-echo.com/post <br/>
 See below how to structure your body and cookies in the request.<br/>
@@ -80,7 +80,7 @@ fetch('https://majcen-cors-api-proxy.herokuapp.com/proxy/post/https://postman-ec
 ## Using POST as a GET request
 You can invoke the POST API as a GET request:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ***proxy-origin-url***/proxy/post-as-get/?base=***BASE64-encoded-string*** <br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **GET:** ***proxy-origin-url***/proxy/post-as-get/?base=***BASE64-encoded-string*** <br/><br/>
 Example: https://majcen-cors-api-proxy.herokuapp.com/proxy/post-as-get/?base=eyJ1IjoiaHR0cHM6Ly9wb3N0bWFuLWVjaG8uY29tL3Bvc3QiLCJwIjoie1wiZXhhbXBsZU5hbWUxXCI6XCJcIixcImV4YW1wbGVOYW1lMlwiOlwiXCJ9In0=
 
 <br/>The BASE64 string is formed from the following JSON object:
