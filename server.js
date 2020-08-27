@@ -6,8 +6,6 @@ const rateLimit = require('express-rate-limit');
 const slowDown = require('express-slow-down');
 const axios = require('axios');
 
-const fetch = require('node-fetch');
-
 const app = express();
 
 const rateLimiter = rateLimit({
